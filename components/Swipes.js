@@ -5,15 +5,15 @@ import {RectButton} from 'react-native-gesture-handler'
 import SwipeableImage from './SwipeableImage'
 
 function Swipes({users, currentIndex, handleLike , handlePass, swipesRef}) {
-    
+
     const [willLike, setwillLike] = useState(false);
     const [willPass, setwillPass] = useState(false);
-    
+
     const renderLeftActions = () => {
         return (
         <RectButton style={styles.container}>
             <SwipeableImage user={users[currentIndex + 1]}></SwipeableImage>
-        </RectButton>   
+        </RectButton>
         )
     }
     const renderRightActions = () => {
@@ -25,7 +25,7 @@ function Swipes({users, currentIndex, handleLike , handlePass, swipesRef}) {
     }
 
     return (
-        <Swipeable 
+        <Swipeable
             ref={swipesRef}
             friction={2}
             leftThreshold={40}

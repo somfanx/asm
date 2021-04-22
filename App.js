@@ -1,101 +1,47 @@
-import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Alert } from "react-native";
-import Constants from "expo-constants";
-import TopBar from "./components/TopBar";
-import axios from "axios";
-import BottomBar from "./components/BottomBar";
-import Swipes from "./components/Swipes";
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import {home} from './components/home';
+import { AddUser } from './components/AddUser';
+import {ListUser} from "./components/ListUser";
+import OptionsMenu from "react-native-options-menu";
+import { StatusBar } from 'expo-status-bar';
+import {UpdataUser} from "./components/UpdateUser";
 
-export default function App() {
-  const [users, setUsers] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const swipesRef = useRef(null);
-
-  const fetchUser = async () => {
-    try {
-      const { data } = await axios.get(
-        "https://randomuser.me/api/?gender=female&results=50"
-      );
-      setUsers(data.results);
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Error getting users", "", [
-        {
-          text: "Retry",
-          onPress: () => {
-            fetchUser();
-          },
-        },
-      ]);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const handleLike = () => {
-    console.log("like");
-    nextUser();
-  };
-
-  const handlePass = () => {
-    console.log("pass");
-    nextUser();
-  };
-
-  const nextUser = () => {
-    const nextIndex = users.length - 2 === currentIndex ? 0 : currentIndex + 1;
-    setCurrentIndex(nextIndex);
-  };
-
-  const handleLikePress = () => {
-    swipesRef.current.openLeft();
-  }
-  const handlePassPress = () => {
-    swipesRef.current.openRight();
-  }
-
-  return (
-    <View style={styles.container}>
-      <TopBar />
-      <View style={styles.swipes}>
-        {users.length > 1 &&
-          users.map(
-            (u, i) =>
-              currentIndex === i && (
-                <Swipes
-                  key={i}
-                  ref={swipesRef}
-                  users={users}
-                  currentIndex={currentIndex}
-                  handleLike={handleLike}
-                  handlePass={handlePass}
-                ></Swipes>
-              )
-          )}
-      </View>
-      <BottomBar handleLikePress={handleLikePress} handlePassPress={handlePassPress}/>
+const asd = ({navigation}) =>{
+  return(
+    <View>
+      <Text>asd</Text>
     </View>
   );
 }
+export default function App() {
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-  },
-  swipes: {
-    flex: 1,
-    padding: 10,
-    paddingTop: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-  },
-});
+  const Stack = createStackNavigator();
+
+  return (
+
+    <NavigationContainer>
+
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={home}
+        />
+        <Stack.Screen
+          name="AddUser"
+          component={AddUser}
+        />
+        <Stack.Screen
+              name="ListUser"
+              component={ListUser}
+        />
+        <Stack.Screen
+            name="UpdateUser"
+            component={UpdataUser}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
